@@ -1,125 +1,103 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-struct Node {
-    int data;
-    struct Node *left, *right;
-} Node;
+void swap(int *a,int *b){
+    int temp=*a;
+    *a=*b;
+    *b=temp;
+}
+void bubbleSort(int arr[],int n){
+    for(int i=0;i<n-1;i++){
+        int flag=0;
+        for(int j=0;j<n-1-i;j++){
+            if(arr[j]>arr[j+1]){
+            int temp=arr[j];
+            arr[j]=arr[j+1];
+            arr[j+1]=temp;
+            flag=1;
+        }
+    }
+        if(flag==0)
+        break;
+    }
+}
 
-struct Node* createNode(int data) {
-    struct Node* newNode = malloc(sizeof(Node));
-    if(newNode == NULL) {
-        printf("Error creating a new node.\n");
+void printArray(int arr[],int n){
+    printf("[");
+    for(int i=0;i<n;i++){
+            printf("%d ",arr[i]);
+        }
+    printf("]");
+}
+void insertionSort(int arr[],int n){
+    for(int i=1;i<n;i++){
+        int temp=arr[i];
+        int j=i-1;
+        while(j>=0 && arr[j]>temp){
+            arr[j+1]=arr[j];
+            j--;
+        }
+    }
+}
+void selectionSort(int arr[],int n){
+    for(int i=0;i<n;i++){
+        int min=i;
+        for(int j=i+1;j<n;j++){
+            if(arr[j]<arr[min]){
+                min=j;
+            }
+        }
+        if(min!=i){
+            swap(&arr[i],&arr[min]);
+        }
+    }
+}
+int main(){
+    int n,choice;
+    printf("Enter the number of element: ");
+    scanf("%d",&n);
+
+    int arr[n];
+    for(int i=0;i<n;i++){
+        printf("Enter the %d data: ",i+1);
+        scanf("%d",&arr[i]);
+    }
+    while(1){
+    printf("Menu:\n");
+    printf("1. Bubble Sort\n");
+    printf("2. Insertion Sort\n");
+    printf("3. Selection Sort\n");
+    printf("4. Exit\n");
+    printf("Enter your choice: ");
+    scanf("%d", &choice);
+
+    switch (choice){
+        case 1:
+        bubbleSort(arr,n);
+        printf("Bubble Sorted Array: \n");
+        printArray(arr,n);
+        break;
+
+        case 2:
+        insertionSort(arr,n);
+        printf("Insertion Sorted Array: \n");
+        printArray(arr,n);
+        break;
+
+        case 3:
+        selectionSort(arr,n);
+        printf("Selection Sorted Array: \n");
+        printArray(arr,n);
+        break;
+
+        case 4:
+        printf("Exiting.....\n");
         exit(0);
-    }
-    newNode->data = data;
-    newNode->left = newNode->right = NULL;
-    return newNode;
-}
+        
+        default:
+            printf("INVALID CHOICE!!");
 
-struct Node* insertNode(struct Node *root, int data) {
-    if(root == NULL) {
-        root = createNode(data);
-    } else if(data < root->data) {
-        root->left = insertNode(root->left, data);
-    } else {
-        root->right = insertNode(root->right, data);
-    }
-    return root;
-}
-//root->right->left
-
-struct Node* findMinNode(struct Node *root) {
-    while(root->left != NULL) {
-        root = root->left;
-    }
-    return root;
-}
-
-struct Node* deleteNode(struct Node *root, int data) {
-    if(root == NULL) {
-        printf("Element Not Found\n");
-    } else if(data < root->data) {
-        root->left = deleteNode(root->left, data);
-    } else if(data > root->data) {
-        root->right = deleteNode(root->right, data);
-    } else {
-        if(root->right && root->left) {
-            struct Node *temp = findMinNode(root->right);
-            root->data = temp->data;
-            root->right = deleteNode(root->right, temp->data);
-        } else {
-            struct Node *temp = root;
-            if(root->left == NULL)
-                root = root->right;
-            else if(root->right == NULL)
-                root = root->left;
-            free(temp);
-        }
-    }
-    return root;
-}
-
-void searchNode(struct Node *root, int data) {
-    if(root == NULL) {
-        printf("Element Not Found\n");
-    } else if(data < root->data) {
-        searchNode(root->left, data);
-    } else if(data > root->data) {
-        searchNode(root->right, data);
-    } else {
-        printf("Element Found\n");
     }
 }
-
-void inorderTraversal(struct Node *root) {
-    if(root != NULL) {
-        inorderTraversal(root->left);
-        printf("%d ", root->data);
-        inorderTraversal(root->right);
-    }
-}
-
-int main() {
-    struct Node *root = NULL;
-    int choice, data;
-
-    while(1) {
-        printf("1. Insert\n2. Delete\n3. Search\n4. Traversal\n5. Exit\nEnter your choice: ");
-        scanf("%d", &choice);
-
-        switch(choice) {
-            case 1:
-                printf("Enter the element to insert: ");
-                scanf("%d", &data);
-                root = insertNode(root, data);
-            break;
-
-            case 2:
-                printf("Enter the element to delete: ");
-                scanf("%d", &data);
-                root = deleteNode(root, data);
-            break;
-            
-            case 3:
-                printf("Enter the element to search: ");
-                scanf("%d", &data);
-                searchNode(root, data);
-            break;
-            
-            case 4:
-                printf("Inorder Traversal: ");
-                inorderTraversal(root);
-                printf("\n");
-            break;  
-            
-            case 5:
-                exit(0);
-            default:
-                printf("Invalid choice!\n");
-            break;
-        }
-    }
-
     return 0;
 }
