@@ -14,6 +14,20 @@ struct Node* createNode(int data){
     newNode->right=NULL;
     return newNode;
 }
+struct Node* insertNode(struct Node* root,int ikey){
+    if(root==NULL){
+        root=createNode(ikey);
+    }
+    else if(ikey<root->data){
+        root->left=insertNode(root->left,ikey);
+    }
+    else if(ikey>root->data){
+        root->right=insertNode(root->right,ikey);
+    }
+    else 
+        printf("DUPLICATE KEY!\n");
+    return root;
+}
 struct Node* recSearch(struct Node* root,int skey){
     if(root==NULL)
         return NULL;
@@ -27,15 +41,17 @@ struct Node* recSearch(struct Node* root,int skey){
 }
 int main(){
     struct Node* root=NULL;
-    root=createNode(67);
-    root->left=createNode(34);
-    root->right=createNode(80);
-    root->left->left=createNode(10);
-    root->left->right=createNode(55);
-    root->left->right->left=createNode(45);
-    root->left->right->right=createNode(60);
+    int data,n;
+    printf("Enter the numbe of nodes: ");
+    scanf("%d",&n);
 
-    struct Node* ptr=recSearch(root,45);
+    for(int i=0;i<n;i++){
+        printf("Enter the data: ");
+        scanf("%d",&data);
+        root=insertNode(root,data);
+    }
+
+    struct Node* ptr=recSearch(root,89);
     if(ptr==NULL)
         printf("Key Not found.\n");
     else
