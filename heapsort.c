@@ -26,13 +26,13 @@ void maxHeapify(int arr[],int n,int i){
 
 void heapSort(int arr[],int n){
     //Building Max Heap
-    for(int i=n/2-1;i>=1;i--){
+    for(int i=n/2-1;i>=0;i--){
         maxHeapify(arr,n,i);
     }
     //Deleting
-    for(int i=n;i>=1;i--){
+    for(int i=n-1;i>=0;i--){
         swap(&arr[0],&arr[i]);
-        maxHeapify(arr,i-1,0);
+        maxHeapify(arr,i,0);
     }
 }
 
